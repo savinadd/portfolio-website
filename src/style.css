@@ -24,7 +24,7 @@ input {
   border-color: #2f68aa;
 }
 
-.theme-blue form {
+.theme-blue .terminal-form {
   color: #72c6ff;
 }
 
@@ -32,7 +32,7 @@ input {
   border-color: #555;
 }
 
-.theme-mono form {
+.theme-mono .terminal-form {
   color: #dedede;
 }
 
@@ -52,8 +52,27 @@ input {
   margin: 0;
 }
 
+.terminal-command {
+  color: #f0f0f0;
+  margin-top: 28px;
+}
+
+.terminal-response {
+  margin: 10px 0 18px 22px;
+  padding-left: 18px;
+  border-left: 2px solid rgb(184 164 255 / 45%);
+}
+
+.theme-blue .terminal-response {
+  border-left-color: rgb(143 199 255 / 50%);
+}
+
+.theme-mono .terminal-response {
+  border-left-color: rgb(255 255 255 / 35%);
+}
+
 .terminal-section {
-  padding: 4px 0 12px;
+  padding: 0 0 4px;
 }
 
 .terminal-section h2 {
@@ -74,18 +93,18 @@ input {
   margin: 0;
 }
 
-form {
+.terminal-form {
   display: flex;
   gap: 8px;
   margin-top: 10px;
   color: #81ff95;
 }
 
-label {
+.terminal-form label {
   flex: none;
 }
 
-input {
+.terminal-form input {
   min-width: 0;
   flex: 1;
   border: 0;
@@ -94,14 +113,14 @@ input {
   color: #dedede;
 }
 
-.terminal nav {
+.quick-commands {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 26px;
 }
 
-.terminal button {
+.quick-commands button {
   border: 1px solid #383838;
   border-radius: 999px;
   background: transparent;
@@ -111,12 +130,12 @@ input {
   padding: 5px 10px;
 }
 
-.terminal button:hover {
+.quick-commands button:hover {
   border-color: #7c5aa8;
   color: #dedede;
 }
 
-footer {
+.terminal-status {
   margin-top: 12px;
   color: #6d6d6d;
   font-size: 0.58em;
@@ -204,7 +223,7 @@ footer {
     margin-top: 28px;
   }
 
-  form {
+  .terminal-form {
     align-items: flex-start;
     flex-direction: column;
   }

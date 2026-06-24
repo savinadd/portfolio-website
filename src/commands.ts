@@ -1,10 +1,10 @@
-import type { Component } from "vue";
-import AboutSection from "./sections/AboutSection.vue";
-import ContactSection from "./sections/ContactSection.vue";
-import EducationSection from "./sections/EducationSection.vue";
-import ExperienceSection from "./sections/ExperienceSection.vue";
-import WorkSection from "./sections/WorkSection.vue";
-import WritingSection from "./sections/WritingSection.vue";
+import type { ComponentType } from "react";
+import { AboutSection } from "./sections/AboutSection";
+import { ContactSection } from "./sections/ContactSection";
+import { EducationSection } from "./sections/EducationSection";
+import { ExperienceSection } from "./sections/ExperienceSection";
+import { WorkSection } from "./sections/WorkSection";
+import { WritingSection } from "./sections/WritingSection";
 
 export const sections = {
   about: AboutSection,
@@ -13,7 +13,7 @@ export const sections = {
   experience: ExperienceSection,
   work: WorkSection,
   writing: WritingSection,
-} satisfies Record<string, Component>;
+} satisfies Record<string, ComponentType>;
 
 export type SectionName = keyof typeof sections;
 
