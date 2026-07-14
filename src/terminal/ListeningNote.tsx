@@ -1,4 +1,4 @@
-import { spotifyFallback } from "../integrations/spotify";
+import { spotifyErrorFallback, spotifyFallback } from "../integrations/spotify";
 import { useCurrentTrack } from "../integrations/useCurrentTrack";
 
 export function ListeningNote() {
@@ -10,7 +10,11 @@ export function ListeningNote() {
         <span className="terminal-listening-label">
           <span className="terminal-meta-icon" aria-hidden="true">♪</span> music
         </span>{" "}
-        {state.status === "loading" ? "checking spotify..." : spotifyFallback}
+        {state.status === "loading"
+          ? "checking spotify..."
+          : state.status === "error"
+            ? spotifyErrorFallback
+            : spotifyFallback}
       </p>
     );
   }

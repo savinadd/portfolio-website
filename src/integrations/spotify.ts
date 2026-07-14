@@ -41,6 +41,9 @@ type NormalizedCurrentlyPlaying = Partial<CurrentTrack>;
 export const spotifyFallback =
   "Savina is currently listening to the lovely sound of production bugs.";
 
+export const spotifyErrorFallback =
+  "Spotify is being shy right now. Try refreshing in a minute.";
+
 function withOptionalTrackFields(
   track: Omit<CurrentTrack, "albumArtUrl" | "durationMs" | "progressMs" | "trackUrl">,
   optional: {

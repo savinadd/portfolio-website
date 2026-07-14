@@ -1,5 +1,6 @@
 import {
   getProgressPercent,
+  spotifyErrorFallback,
   spotifyFallback,
 } from "../integrations/spotify";
 import { useCurrentTrack } from "../integrations/useCurrentTrack";
@@ -17,7 +18,13 @@ export function ListeningCard({ variant = "card" }: ListeningCardProps) {
         <span className="website-listening-label">
           <span aria-hidden="true">♪</span> Music
         </span>
-        <p>{state.status === "loading" ? "checking spotify..." : spotifyFallback}</p>
+        <p>
+          {state.status === "loading"
+            ? "checking spotify..."
+            : state.status === "error"
+              ? spotifyErrorFallback
+              : spotifyFallback}
+        </p>
       </div>
     );
   }
