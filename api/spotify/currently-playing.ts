@@ -1,8 +1,15 @@
 const tokenUrl = "https://accounts.spotify.com/api/token";
 const currentlyPlayingUrl = "https://api.spotify.com/v1/me/player/currently-playing";
-const serverEnv = (globalThis as typeof globalThis & {
-  process: { env: Record<string, string | undefined> };
-}).process.env;
+
+function getServerEnv() {
+  return (globalThis as typeof globalThis & {
+    process?: { env?: Record<string, string | undefined> };
+  }).process?.env ?? {};
+}
+
+function encodeBasicAuth(value: string) {
+  return globalThis.btoa(value);
+}
 
 function jsonResponse(body: unknown, init?: ResponseInit) {
   return Response.json(body, {
@@ -15,6 +22,7 @@ function jsonResponse(body: unknown, init?: ResponseInit) {
 }
 
 async function getAccessToken() {
+  const serverEnv = getServerEnv();
   const clientId = serverEnv.SPOTIFY_CLIENT_ID;
   const clientSecret = serverEnv.SPOTIFY_CLIENT_SECRET;
   const refreshToken = serverEnv.SPOTIFY_REFRESH_TOKEN;
@@ -29,7 +37,7 @@ async function getAccessToken() {
       refresh_token: refreshToken,
     }),
     headers: {
-      Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+      Authorization: `Basic ${encodeBasicAuth(`${clientId}:${clientSecret}`)}`,
       "Content-Type": "application/x-www-form-urlencoded",
     },
     method: "POST",
