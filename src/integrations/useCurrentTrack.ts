@@ -4,7 +4,9 @@ import {
   normalizeCurrentTrack,
 } from "./spotify";
 
-const spotifyEndpoint = import.meta.env.VITE_SPOTIFY_CURRENTLY_PLAYING_ENDPOINT;
+const spotifyEndpoint =
+  import.meta.env.VITE_SPOTIFY_CURRENTLY_PLAYING_ENDPOINT ??
+  "/api/spotify/currently-playing";
 
 export type CurrentTrackState =
   | { status: "loading" | "empty" | "error"; track?: never }

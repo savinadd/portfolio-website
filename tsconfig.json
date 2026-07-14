@@ -17,5 +17,5 @@
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["api/**/*.ts", "src/**/*.ts", "src/**/*.tsx"]
 }
