@@ -30,10 +30,6 @@ export function WebsiteView({ onTerminal }: WebsiteViewProps) {
 
       <header className="website-hero" id="top">
         <h1>Hi, I'm Savina.</h1>
-        <p>
-          I build thoughtful software across AI, cloud systems, and useful web
-          experiences.
-        </p>
         <ListeningCard variant="hero" />
         <div className="website-actions">
           <a href="#contact">Contact</a>
