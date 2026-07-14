@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -11,7 +10,14 @@ export default tseslint.config(
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        document: "readonly",
+        fetch: "readonly",
+        KeyboardEvent: "readonly",
+        localStorage: "readonly",
+        navigator: "readonly",
+        window: "readonly",
+      },
     },
     plugins: {
       "react-hooks": reactHooks,

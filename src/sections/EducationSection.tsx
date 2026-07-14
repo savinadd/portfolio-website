@@ -1,8 +1,23 @@
+import { education } from "../data/education";
+
 export function EducationSection() {
   return (
     <section className="terminal-section">
       <h2>education</h2>
-      <p>always learning, experimenting, and getting better one project at a time.</p>
+      <dl>
+        <div>
+          <dt>school</dt>
+          <dd>{education.school}</dd>
+        </div>
+        <div>
+          <dt>program</dt>
+          <dd>{education.status}</dd>
+        </div>
+        <div>
+          <dt>details</dt>
+          <dd>{education.details.join(" · ")}</dd>
+        </div>
+      </dl>
     </section>
   );
 }

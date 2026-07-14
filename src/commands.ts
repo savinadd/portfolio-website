@@ -1,50 +1,50 @@
-import type { ComponentType } from "react";
-import { AboutSection } from "./sections/AboutSection";
-import { ContactSection } from "./sections/ContactSection";
-import { EducationSection } from "./sections/EducationSection";
-import { ExperienceSection } from "./sections/ExperienceSection";
-import { WorkSection } from "./sections/WorkSection";
-import { WritingSection } from "./sections/WritingSection";
+import { sectionList, sections, type SectionId } from "./content";
+import { themeNames } from "./themes";
 
-export const sections = {
-  about: AboutSection,
-  contact: ContactSection,
-  education: EducationSection,
-  experience: ExperienceSection,
-  work: WorkSection,
-  writing: WritingSection,
-} satisfies Record<string, ComponentType>;
+export { sections };
 
-export type SectionName = keyof typeof sections;
+export type SectionName = SectionId;
+
+export type HelpItem = {
+  command: string;
+  description: string;
+};
 
 export const commandNames = [
   "help",
-  "ls",
-  "pwd",
-  "cd",
-  "cat",
-  "open",
+  "hi",
+  "hello",
+  "tour",
+  "copy",
+  "email",
+  "github",
+  "linkedin",
+  "work",
   ...Object.keys(sections),
+  "resume",
   "theme",
+  "stars",
+  "hack",
+  "404",
   "whoami",
   "website",
   "clear",
 ];
 
-export const help = `about       a little about me
-work        selected work
-experience  how i work
-education   what i'm learning
-writing     notes and ideas
-contact     ways to reach me
-ls / cd     explore like a filesystem
-cat / open  read or open something
-theme       purple, blue, or mono
-website     switch to the normal website
-clear       clear the terminal`;
-
-export const files = {
-  "~": ["about.txt", "work/", "experience.txt", "education.txt", "writing/", "contact.txt"],
-  "~/work": ["terminal-portfolio/"],
-  "~/writing": ["notes.txt"],
-} satisfies Record<string, string[]>;
+export const helpItems: HelpItem[] = [
+  ...sectionList.map((section) => ({
+    command: section.id,
+    description: section.description,
+  })),
+  { command: "hi / hello", description: "say hi" },
+  { command: "tour", description: "guided walkthrough" },
+  { command: "work / experience", description: "work history" },
+  { command: "email", description: "show my email address" },
+  { command: "github", description: "open github" },
+  { command: "linkedin", description: "open linkedin" },
+  { command: "copy email", description: "copy my email address" },
+  { command: "resume", description: "open my resume" },
+  { command: "theme", description: `${themeNames.join(", ")}, random` },
+  { command: "website", description: "switch to the normal website" },
+  { command: "clear", description: "clear the terminal" },
+];
