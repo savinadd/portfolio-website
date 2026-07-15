@@ -11,9 +11,13 @@ import { WebsiteView } from "./website/WebsiteView";
 const quickCommands = ["about", "contact", "experience", "education", "website"];
 const manatees = [
   { delay: "0s", size: "86px", top: "18%" },
-  { delay: "7s", size: "64px", top: "42%" },
-  { delay: "14s", size: "104px", top: "68%" },
-  { delay: "22s", size: "72px", top: "28%" },
+  { delay: "0.8s", size: "58px", top: "34%" },
+  { delay: "1.6s", size: "74px", top: "52%" },
+  { delay: "2.5s", size: "112px", top: "68%" },
+  { delay: "3.4s", size: "52px", top: "12%" },
+  { delay: "4.3s", size: "78px", top: "28%" },
+  { delay: "5.2s", size: "66px", top: "78%" },
+  { delay: "6.1s", size: "96px", top: "44%" },
 ] as const;
 const hackLines = [
   "ssh savina@portfolio",
