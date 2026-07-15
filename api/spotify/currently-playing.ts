@@ -13,10 +13,35 @@ type ApiResponse = {
   status: (code: number) => ApiResponse;
 };
 
+class SpotifyApiError extends Error {
+  constructor(
+    message: string,
+    readonly code: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
+
 function getServerEnv() {
   return (globalThis as typeof globalThis & {
     process?: { env?: Record<string, string | undefined> };
   }).process?.env ?? {};
+}
+
+function cleanEnvValue(value: string | undefined) {
+  const trimmed = value?.trim();
+
+  if (!trimmed) return undefined;
+
+  if (
+    (trimmed.startsWith("\"") && trimmed.endsWith("\"")) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+
+  return trimmed;
 }
 
 function encodeBasicAuth(value: string) {
@@ -41,12 +66,16 @@ function sendJson(response: ApiResponse, status: number, body: unknown) {
 
 async function getAccessToken() {
   const serverEnv = getServerEnv();
-  const clientId = serverEnv.SPOTIFY_CLIENT_ID;
-  const clientSecret = serverEnv.SPOTIFY_CLIENT_SECRET;
-  const refreshToken = serverEnv.SPOTIFY_REFRESH_TOKEN;
+  const clientId = cleanEnvValue(serverEnv.SPOTIFY_CLIENT_ID);
+  const clientSecret = cleanEnvValue(serverEnv.SPOTIFY_CLIENT_SECRET);
+  const refreshToken = cleanEnvValue(serverEnv.SPOTIFY_REFRESH_TOKEN);
 
   if (!clientId || !clientSecret || !refreshToken) {
-    throw new Error("Spotify environment variables are not configured");
+    throw new SpotifyApiError(
+      "Spotify environment variables are not configured",
+      "missing_env",
+      500,
+    );
   }
 
   const response = await fetch(tokenUrl, {
@@ -63,7 +92,11 @@ async function getAccessToken() {
   const payload = await response.json();
 
   if (!response.ok) {
-    throw new Error(payload.error_description ?? payload.error ?? "Spotify token refresh failed");
+    throw new SpotifyApiError(
+      payload.error_description ?? payload.error ?? "Spotify token refresh failed",
+      payload.error ?? "token_refresh_failed",
+      response.status,
+    );
   }
 
   return payload.access_token as string;
@@ -93,6 +126,18 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     response.setHeader("Content-Type", "application/json");
     response.status(spotifyResponse.status).send(await spotifyResponse.text());
   } catch (error) {
+    if (error instanceof SpotifyApiError) {
+      sendJson(
+        response,
+        error.status,
+        {
+          code: error.code,
+          error: error.message,
+        },
+      );
+      return;
+    }
+
     sendJson(
       response,
       500,
