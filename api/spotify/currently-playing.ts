@@ -1,6 +1,18 @@
 const tokenUrl = "https://accounts.spotify.com/api/token";
 const currentlyPlayingUrl = "https://api.spotify.com/v1/me/player/currently-playing";
 
+type ApiRequest = {
+  method?: string;
+};
+
+type ApiResponse = {
+  end: () => void;
+  json: (body: unknown) => void;
+  send: (body: string) => void;
+  setHeader: (name: string, value: string) => void;
+  status: (code: number) => ApiResponse;
+};
+
 function getServerEnv() {
   return (globalThis as typeof globalThis & {
     process?: { env?: Record<string, string | undefined> };
@@ -8,17 +20,23 @@ function getServerEnv() {
 }
 
 function encodeBasicAuth(value: string) {
-  return globalThis.btoa(value);
+  const globals = globalThis as typeof globalThis & {
+    Buffer?: {
+      from: (input: string, encoding?: string) => { toString: (encoding: string) => string };
+    };
+    btoa?: (input: string) => string;
+  };
+
+  if (globals.Buffer) return globals.Buffer.from(value, "utf8").toString("base64");
+  if (globals.btoa) return globals.btoa(value);
+
+  throw new Error("No base64 encoder is available");
 }
 
-function jsonResponse(body: unknown, init?: ResponseInit) {
-  return Response.json(body, {
-    ...init,
-    headers: {
-      "Cache-Control": "no-store",
-      ...init?.headers,
-    },
-  });
+function sendJson(response: ApiResponse, status: number, body: unknown) {
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("Content-Type", "application/json");
+  response.status(status).json(body);
 }
 
 async function getAccessToken() {
@@ -51,43 +69,34 @@ async function getAccessToken() {
   return payload.access_token as string;
 }
 
-async function getCurrentlyPlaying() {
+export default async function handler(request: ApiRequest, response: ApiResponse) {
+  response.setHeader("Cache-Control", "no-store");
+
+  if (request.method !== "GET") {
+    sendJson(response, 405, { error: "Method not allowed" });
+    return;
+  }
+
   try {
     const accessToken = await getAccessToken();
-    const response = await fetch(currentlyPlayingUrl, {
+    const spotifyResponse = await fetch(currentlyPlayingUrl, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (response.status === 204) {
-      return new Response(null, {
-        headers: { "Cache-Control": "no-store" },
-        status: 204,
-      });
+    if (spotifyResponse.status === 204) {
+      response.status(204).end();
+      return;
     }
 
-    return new Response(await response.text(), {
-      headers: {
-        "Cache-Control": "no-store",
-        "Content-Type": "application/json",
-      },
-      status: response.status,
-    });
+    response.setHeader("Content-Type", "application/json");
+    response.status(spotifyResponse.status).send(await spotifyResponse.text());
   } catch (error) {
-    return jsonResponse(
+    sendJson(
+      response,
+      500,
       { error: error instanceof Error ? error.message : "Spotify request failed" },
-      { status: 500 },
     );
   }
 }
-
-export default {
-  fetch(request: Request) {
-    if (request.method !== "GET") {
-      return jsonResponse({ error: "Method not allowed" }, { status: 405 });
-    }
-
-    return getCurrentlyPlaying();
-  },
-};
