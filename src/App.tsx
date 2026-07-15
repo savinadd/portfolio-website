@@ -10,14 +10,14 @@ import { WebsiteView } from "./website/WebsiteView";
 
 const quickCommands = ["about", "contact", "experience", "education", "website"];
 const manatees = [
-  { delay: "0s", size: "86px", top: "18%" },
-  { delay: "0.8s", size: "58px", top: "34%" },
-  { delay: "1.6s", size: "74px", top: "52%" },
-  { delay: "2.5s", size: "112px", top: "68%" },
-  { delay: "3.4s", size: "52px", top: "12%" },
-  { delay: "4.3s", size: "78px", top: "28%" },
-  { delay: "5.2s", size: "66px", top: "78%" },
-  { delay: "6.1s", size: "96px", top: "44%" },
+  { delay: "0s", direction: "right", duration: "38s", midY: "12vh", size: "86px", top: "14%", endY: "-7vh" },
+  { delay: "0.8s", direction: "left", duration: "44s", midY: "-10vh", size: "58px", top: "48%", endY: "8vh" },
+  { delay: "1.9s", direction: "right", duration: "41s", midY: "-16vh", size: "74px", top: "72%", endY: "-4vh" },
+  { delay: "3.1s", direction: "left", duration: "49s", midY: "14vh", size: "112px", top: "24%", endY: "-10vh" },
+  { delay: "4.4s", direction: "right", duration: "35s", midY: "8vh", size: "52px", top: "58%", endY: "13vh" },
+  { delay: "5.6s", direction: "left", duration: "42s", midY: "-18vh", size: "78px", top: "84%", endY: "-6vh" },
+  { delay: "6.9s", direction: "right", duration: "46s", midY: "18vh", size: "66px", top: "32%", endY: "-12vh" },
+  { delay: "8.2s", direction: "left", duration: "39s", midY: "6vh", size: "96px", top: "64%", endY: "10vh" },
 ] as const;
 const hackLines = [
   "ssh savina@portfolio",
@@ -181,11 +181,14 @@ export default function App() {
             {manatees.map((manatee) => (
               <img
                 alt=""
-                className="floating-manatee"
+                className={`floating-manatee floating-manatee-${manatee.direction}`}
                 key={`${manatee.top}-${manatee.delay}`}
                 src="/manatee-logo.png"
                 style={{
                   "--delay": manatee.delay,
+                  "--duration": manatee.duration,
+                  "--end-y": manatee.endY,
+                  "--mid-y": manatee.midY,
                   "--size": manatee.size,
                   "--top": manatee.top,
                 } as React.CSSProperties}

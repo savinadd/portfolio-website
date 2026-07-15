@@ -214,7 +214,7 @@ export function useTerminal() {
       setTheme("manatee");
       setEffect("manatee");
       nextOutput.push(
-        createText("ocean mode enabled. manatees are drifting through. write clear to go back."),
+        createText("ocean mode enabled. manatees are drifting through. write 'clear' to go back."),
       );
     } else if (command === "hack") {
       setOverlay("hack");

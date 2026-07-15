@@ -364,14 +364,28 @@ input {
 .floating-manatee {
   position: absolute;
   top: var(--top);
-  left: calc(-1 * var(--size));
   width: var(--size);
-  opacity: 0.34;
+  opacity: 0;
   filter:
     drop-shadow(0 0 18px rgb(142 216 232 / 28%))
     saturate(0.75);
-  animation: manatee-swim 36s ease-in-out infinite;
   animation-delay: var(--delay);
+  animation-duration: var(--duration);
+  animation-fill-mode: both;
+}
+
+.floating-manatee-right {
+  left: calc(-1 * var(--size));
+  animation-name: manatee-swim-right;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.floating-manatee-left {
+  right: calc(-1 * var(--size));
+  animation-name: manatee-swim-left;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 .terminal-bug {
@@ -740,10 +754,10 @@ input {
   }
 }
 
-@keyframes manatee-swim {
+@keyframes manatee-swim-right {
   0% {
     opacity: 0;
-    transform: translate(-12vw, 0) rotate(2deg) scaleX(1);
+    transform: translate(-12vw, 0) rotate(2deg) scaleX(-1);
   }
 
   12% {
@@ -751,7 +765,7 @@ input {
   }
 
   45% {
-    transform: translate(48vw, -7vh) rotate(-3deg) scaleX(1);
+    transform: translate(48vw, var(--mid-y)) rotate(-3deg) scaleX(-1);
   }
 
   78% {
@@ -760,7 +774,31 @@ input {
 
   100% {
     opacity: 0;
-    transform: translate(120vw, 4vh) rotate(4deg) scaleX(1);
+    transform: translate(120vw, var(--end-y)) rotate(4deg) scaleX(-1);
+  }
+}
+
+@keyframes manatee-swim-left {
+  0% {
+    opacity: 0;
+    transform: translate(12vw, 0) rotate(-2deg) scaleX(1);
+  }
+
+  12% {
+    opacity: 0.32;
+  }
+
+  45% {
+    transform: translate(-48vw, var(--mid-y)) rotate(3deg) scaleX(1);
+  }
+
+  78% {
+    opacity: 0.28;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-120vw, var(--end-y)) rotate(-4deg) scaleX(1);
   }
 }
 
