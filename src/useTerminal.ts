@@ -11,6 +11,8 @@ type ViewMode = "terminal" | "website";
 type TerminalEffect = "none" | "stars";
 type TerminalOverlay = "hack" | "not-found" | null;
 
+const mobileMediaQuery = "(max-width: 700px)";
+
 export type TerminalOutput =
   | { id: number; input: string; kind: "command"; prompt: string }
   | { id: number; kind: "help" }
@@ -80,6 +82,12 @@ function suggestCommand(command: string) {
   return score <= 3 ? suggestion : undefined;
 }
 
+function getInitialMode(): ViewMode {
+  if (typeof window === "undefined" || !window.matchMedia) return "terminal";
+
+  return window.matchMedia(mobileMediaQuery).matches ? "website" : "terminal";
+}
+
 export function useTerminal() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<TerminalOutput[]>(initialOutput);
@@ -87,7 +95,7 @@ export function useTerminal() {
   const [historyIndex, setHistoryIndex] = useState(0);
   const [effect, setEffect] = useState<TerminalEffect>("none");
   const [theme, setTheme] = useState<Theme>("purple");
-  const [mode, setMode] = useState<ViewMode>("terminal");
+  const [mode, setMode] = useState<ViewMode>(getInitialMode);
   const [overlay, setOverlay] = useState<TerminalOverlay>(null);
   const nextOutputId = useRef(initialOutput.length);
 
