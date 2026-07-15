@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { helpItems, sections } from "./commands";
 import { BugGame } from "./terminal/BugGame";
 import { ListeningNote } from "./terminal/ListeningNote";
@@ -52,7 +53,12 @@ export default function App() {
   }, [terminal]);
 
   if (terminal.mode === "website") {
-    return <WebsiteView onTerminal={() => terminal.setMode("terminal")} />;
+    return (
+      <>
+        <WebsiteView onTerminal={() => terminal.setMode("terminal")} />
+        <Analytics />
+      </>
+    );
   }
 
   const themeStyle: ThemeStyle = {
@@ -216,6 +222,7 @@ function TerminalOverlay({
         {children}
         <p className="overlay-escape">press esc to return</p>
       </div>
+      <Analytics />
     </div>
   );
 }
