@@ -9,6 +9,12 @@ import { useTerminal } from "./useTerminal";
 import { WebsiteView } from "./website/WebsiteView";
 
 const quickCommands = ["about", "contact", "experience", "education", "website"];
+const manatees = [
+  { delay: "0s", size: "86px", top: "18%" },
+  { delay: "7s", size: "64px", top: "42%" },
+  { delay: "14s", size: "104px", top: "68%" },
+  { delay: "22s", size: "72px", top: "28%" },
+] as const;
 const hackLines = [
   "ssh savina@portfolio",
   "authenticating signal...",
@@ -165,6 +171,24 @@ export default function App() {
         </main>
 
         <BugGame />
+
+        {terminal.effect === "manatee" ? (
+          <div className="manatee-layer" aria-hidden="true">
+            {manatees.map((manatee) => (
+              <img
+                alt=""
+                className="floating-manatee"
+                key={`${manatee.top}-${manatee.delay}`}
+                src="/manatee-logo.png"
+                style={{
+                  "--delay": manatee.delay,
+                  "--size": manatee.size,
+                  "--top": manatee.top,
+                } as React.CSSProperties}
+              />
+            ))}
+          </div>
+        ) : null}
 
         {terminal.overlay === "hack" && (
           <TerminalOverlay label="hack mode" variant="hack">

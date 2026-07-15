@@ -30,7 +30,8 @@ input {
     #0d0d0d;
 }
 
-.page::before {
+.page::before,
+.page::after {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -51,6 +52,33 @@ input {
     140px 140px,
     190px 190px;
   opacity: 0.18;
+}
+
+.effect-manatee {
+  background:
+    radial-gradient(ellipse at 50% 10%, rgb(142 216 232 / 38%), transparent 34rem),
+    radial-gradient(circle at 78% 20%, rgb(64 154 176 / 20%), transparent 30rem),
+    linear-gradient(180deg, #07313d 0%, #092831 42%, #061618 78%, #030808 100%);
+}
+
+.effect-manatee::before {
+  background:
+    radial-gradient(circle at 16% 22%, rgb(230 255 255 / 24%) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 62%, rgb(230 255 255 / 16%) 0 1px, transparent 2px),
+    radial-gradient(circle at 42% 82%, rgb(230 255 255 / 12%) 0 1px, transparent 2px);
+  background-size:
+    130px 130px,
+    180px 180px,
+    240px 240px;
+  opacity: 0.45;
+  animation: ocean-drift 28s linear infinite;
+}
+
+.effect-manatee::after {
+  background:
+    radial-gradient(ellipse at 50% 38%, rgb(184 245 255 / 13%), transparent 28rem),
+    linear-gradient(180deg, transparent 0 58%, rgb(1 6 7 / 38%) 100%);
+  opacity: 1;
 }
 
 .terminal {
@@ -323,6 +351,27 @@ input {
   inset: 0;
   z-index: 4;
   pointer-events: none;
+}
+
+.manatee-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-manatee {
+  position: absolute;
+  top: var(--top);
+  left: calc(-1 * var(--size));
+  width: var(--size);
+  opacity: 0.34;
+  filter:
+    drop-shadow(0 0 18px rgb(142 216 232 / 28%))
+    saturate(0.75);
+  animation: manatee-swim 36s ease-in-out infinite;
+  animation-delay: var(--delay);
 }
 
 .terminal-bug {
@@ -679,6 +728,39 @@ input {
 @keyframes cursor-pulse {
   50% {
     box-shadow: inset 0.55em 0 0 transparent;
+  }
+}
+
+@keyframes ocean-drift {
+  to {
+    background-position:
+      130px 0,
+      -180px 0,
+      240px -120px;
+  }
+}
+
+@keyframes manatee-swim {
+  0% {
+    opacity: 0;
+    transform: translate(-12vw, 0) rotate(2deg) scaleX(1);
+  }
+
+  12% {
+    opacity: 0.32;
+  }
+
+  45% {
+    transform: translate(48vw, -7vh) rotate(-3deg) scaleX(1);
+  }
+
+  78% {
+    opacity: 0.28;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(120vw, 4vh) rotate(4deg) scaleX(1);
   }
 }
 

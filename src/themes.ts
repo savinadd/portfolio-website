@@ -2,6 +2,7 @@ export const themes = {
   blue: "#72c6ff",
   green: "#81ff95",
   indigo: "#8ea2ff",
+  manatee: "#8ed8e8",
   mono: "#dedede",
   orange: "#ffb86c",
   purple: "#b8a4ff",

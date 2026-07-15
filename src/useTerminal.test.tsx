@@ -210,6 +210,30 @@ describe("useTerminal", () => {
     });
   });
 
+  it("enables manatee mode", () => {
+    const { result } = renderHook(() => useTerminal());
+
+    act(() => result.current.run("manatee"));
+
+    expect(result.current.effect).toBe("manatee");
+    expect(result.current.theme).toBe("manatee");
+    expect(result.current.output.at(-1)).toMatchObject({
+      kind: "text",
+      value: "ocean mode enabled. manatees are drifting through. 'clear' to go back.",
+    });
+  });
+
+  it("clears the terminal and resets visual effects", () => {
+    const { result } = renderHook(() => useTerminal());
+
+    act(() => result.current.run("manatee"));
+    act(() => result.current.run("clear"));
+
+    expect(result.current.output).toEqual([]);
+    expect(result.current.effect).toBe("none");
+    expect(result.current.theme).toBe("purple");
+  });
+
   it.each([
     ["hack", "hack"],
     ["404", "not-found"],

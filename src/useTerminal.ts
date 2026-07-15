@@ -8,7 +8,7 @@ import { contactLinks, email, resume } from "./profile";
 import { themeNames, themes, type Theme } from "./themes";
 
 type ViewMode = "terminal" | "website";
-type TerminalEffect = "none" | "stars";
+type TerminalEffect = "manatee" | "none" | "stars";
 type TerminalOverlay = "hack" | "not-found" | null;
 
 const mobileMediaQuery = "(max-width: 700px)";
@@ -148,6 +148,8 @@ export function useTerminal() {
 
     if (command === "clear") {
       setOutput([]);
+      setEffect("none");
+      setTheme("purple");
       return;
     }
 
@@ -207,6 +209,12 @@ export function useTerminal() {
       setEffect(nextEffect);
       nextOutput.push(
         createText(nextEffect === "stars" ? "stars enabled" : "stars disabled"),
+      );
+    } else if (command === "manatee") {
+      setTheme("manatee");
+      setEffect("manatee");
+      nextOutput.push(
+        createText("ocean mode enabled. manatees are drifting through. write clear to go back."),
       );
     } else if (command === "hack") {
       setOverlay("hack");
